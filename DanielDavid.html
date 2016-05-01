@@ -4,12 +4,55 @@
 
 	<body>
 		
-		<canvas id = "myCanvas" width = "500" height = "500"></canvas>	
+		<canvas id = "myCanvas" width = "500" height = "500" style = "border:1px solid #c3c3c3;">Your browser needs HTML5 and Javascript support to play this game.</canvas>	
 		
-		<script type="text/javascript">
+		<script type = "text/javascript">
 
-			var canvas = document.getElementByID('myCanvas');
-			var ctx = canvas.getContect("2d");
+			var canvas = document.getElementById("myCanvas");
+			var ctx = canvas.getContext("2d");
+
+			var movingRight = true;
+
+			var box = {
+
+				pos: [0, 0],
+			}
+			function drawBox () {
+
+				ctx.fillStyle = "#000";
+				ctx.fillRect(box.pos[0], box.pos[1], 20, 20);
+			}
+
+			function moveBox () {
+
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				//Move to right
+				if (movingRight == true) { 
+
+					box.pos[0] += 5;
+				};
+				//Move to left
+				if (movingRight == false) { 
+
+					box.pos[0] -= 5;
+				};
+				if (box.pos[0] >= canvas.width - 20 || box.pos[0] <= 0) {
+
+					movingRight = !movingRight;
+				};
+			}
+
+			function runGame () {
+
+
+				//Always write move functions before drawing.
+				moveBox();
+
+				//Draw Everything to screen
+				drawBox();
+			}
+
+			var draw = setInterval(runGame, (1000 / 60));
 
 		</script>	
 
