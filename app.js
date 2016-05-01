@@ -38,7 +38,7 @@ function boxClass() {
 	}
 }
 
-//To create an instance of the class just do this.
+//To create an instance of a class just do this.
 var box2 = new boxClass();
 
 //The box is an object
