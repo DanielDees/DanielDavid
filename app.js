@@ -2,10 +2,11 @@
 //Main Javascript file
 //====================
 
+//The HTML5 Canvas element
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
-var movingRight = true;
+var GAME_FPS = 60;
 
 //This is a class
 function boxClass() {
@@ -72,21 +73,22 @@ var box = {
 
 function drawBox () {
 
+	//Color
 	ctx.fillStyle = "#000";
+	//Rectangle X, Y, width, height
 	ctx.fillRect(box.pos[0], box.pos[1], 20, 20);
 }
 function drawBox2 () {
 
+	//Color
 	ctx.fillStyle = "#F00";
+	//Rectangle X, Y, width, height
 	ctx.fillRect(box2.pos[0], box2.pos[1], 20, 20);
 }
 
-function moveBox () {
+function moveBoxes () {
 
 	box.move();
-}
-function moveBox2 () {
-
 	box2.move();
 }
 
@@ -95,16 +97,15 @@ function runGame () {
 	//Clears screen before repaint
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	//Always write move functions before drawing.
-	moveBox();
-	moveBox2();
+	//Always move before drawing.
+	moveBoxes();
 
 	//Draw Everything to screen
 	drawBox();
 	drawBox2();
 }
 
-var draw = setInterval(runGame, (1000 / 60));
+var draw = setInterval(runGame, (1000 / GAME_FPS));
 
 //===========================
 //End of main Javascript file
