@@ -26,6 +26,7 @@
 				*/
 
 				this.pos = [0, 0];
+				this.spd = [5, 0];
 			}
 
 			//To create an instance of the class just do this.
@@ -43,6 +44,7 @@
 				*/
 
 				pos: [0, 0],
+				spd: [5, 0],
 			}
 
 			function drawBox () {
@@ -60,14 +62,14 @@
 
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				//Move to right
-				if (movingRight == true) { 
+				if (movingRight) { 
 
-					box.pos[0] += 5;
+					box.pos[0] += box.spd[0];
 				};
 				//Move to left
-				if (movingRight == false) { 
+				if (!movingRight) { 
 
-					box.pos[0] -= 5;
+					box.pos[0] -= box.spd[0];
 				};
 				if (box.pos[0] >= canvas.width - 20 || box.pos[0] <= 0) {
 
