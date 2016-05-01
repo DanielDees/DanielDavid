@@ -19,7 +19,22 @@ function boxClass() {
 	*/
 
 	this.pos = [0, 0];
-	this.spd = [5, 0];
+	this.spd = [0, 5];
+
+	this.move = function() {
+
+		if (this.pos[1] <= 0) { 
+
+			this.spd[1] = 5;
+		};
+		if (this.pos[1] >= canvas.width - 20) { 
+
+			this.spd[1] = -5;
+		};
+
+		this.pos[0] += this.spd[0];
+		this.pos[1] += this.spd[1];	
+	}
 }
 
 //To create an instance of the class just do this.
@@ -38,6 +53,21 @@ var box = {
 
 	pos: [0, 0],
 	spd: [5, 0],
+
+	move: function() {
+
+		if (this.pos[0] <= 0) { 
+
+			this.spd[0] = 5;
+		};
+		if (this.pos[0] >= canvas.width - 20) { 
+
+			this.spd[0] = -5;
+		};
+
+		this.pos[0] += this.spd[0];
+		this.pos[1] += this.spd[1];
+	}
 }
 
 function drawBox () {
@@ -47,33 +77,27 @@ function drawBox () {
 }
 function drawBox2 () {
 
-	ctx.fillStyle = "#FF0000";
+	ctx.fillStyle = "#F00";
 	ctx.fillRect(box2.pos[0], box2.pos[1], 20, 20);
 }
 
 function moveBox () {
 
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	//Move to right
-	if (movingRight) { 
+	box.move();
+}
+function moveBox2 () {
 
-		box.pos[0] += box.spd[0];
-	};
-	//Move to left
-	if (!movingRight) { 
-
-		box.pos[0] -= box.spd[0];
-	};
-	if (box.pos[0] >= canvas.width - 20 || box.pos[0] <= 0) {
-
-		movingRight = !movingRight;
-	};
+	box2.move();
 }
 
 function runGame () {
 
+	//Clears screen before repaint
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+
 	//Always write move functions before drawing.
 	moveBox();
+	moveBox2();
 
 	//Draw Everything to screen
 	drawBox();
