@@ -81,3 +81,7 @@ function runGame () {
 }
 
 var draw = setInterval(runGame, (1000 / 60));
+
+//===========================
+//End of main Javascript file
+//===========================
