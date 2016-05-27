@@ -1,0 +1,29 @@
+{
+  "name": "danieldavidgame",
+  "version": "1.0.0",
+  "description": "Testing out server usage with node",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanielDees/DanielDavid.git"
+  },
+  "keywords": [
+    "sockets",
+    "server.js",
+    "node"
+  ],
+  "author": "Daniel Dees",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DanielDees/DanielDavid/issues"
+  },
+  "homepage": "https://github.com/DanielDees/DanielDavid#readme",
+  "dependencies": {
+    "express": "^4.13.4",
+    "socket.io": "^1.4.6"
+  }
+}
