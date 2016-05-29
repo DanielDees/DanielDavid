@@ -41,6 +41,10 @@ function boxClass() {
 
 		this.pos[0] += this.spd[0];
 		this.pos[1] += this.spd[1];	
+
+		//Send new position to server.
+		//console.log("Sending: " + this.pos);
+		socket.emit('boxClass', this.pos);
 	}
 }
 

@@ -13,7 +13,16 @@ var io = socket(server);
 
 io.sockets.on('connection', newConnection);
 
+//On user connection
 function newConnection(socket) {
 
-	console.log("New user connected - ID: ");
+	console.log("A new user has connected - ID: " + socket.id);
+
+	//Get info from boxClass and send data to moveBox
+	socket.on('boxClass', moveBox);
+
+	function moveBox(pos) {
+
+		console.log("Server recieved: " + pos);
+	}
 }
