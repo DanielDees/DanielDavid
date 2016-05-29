@@ -24,5 +24,8 @@ function newConnection(socket) {
 	function moveBox(pos) {
 
 		console.log("Server recieved: " + pos);
+
+		//Send information out to all users
+		socket.broadcast.emit('boxClass', pos);
 	}
 }

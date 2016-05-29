@@ -6,6 +6,8 @@
 
 var socket = io.connect('http://localhost:3000');
 
+socket.on('boxClass', moveGuestUser);
+
 //END SERVER CONNECT
 
 //The HTML5 Canvas element
@@ -14,16 +16,18 @@ var ctx = canvas.getContext("2d");
 
 var GAME_FPS = 60;
 
-//This is a class
+//Other users are rendered
+function moveGuestUser(pos) {
+
+	console.log('IT WORKS!');
+
+	guestUser.pos = pos;
+}
+
+var box = new boxClass();
+var guestUser = new boxClass();
+
 function boxClass() {
-
-	/*
-		You assign values to a class like this
-
-		this.attribute = value,
-		this.attribute2 = value2,
-		this.lastattribute = value3,
-	*/
 
 	this.pos = [0, 0];
 	this.spd = [0, 5];
@@ -43,76 +47,27 @@ function boxClass() {
 		this.pos[1] += this.spd[1];	
 
 		//Send new position to server.
-		//console.log("Sending: " + this.pos);
 		socket.emit('boxClass', this.pos);
 	}
-}
 
-//To create an instance of a class just do this.
-var box2 = new boxClass();
+	this.draw = function() {
 
-//The box is an object
-var box = {
-
-	/*
-		You assign values to object like this
-
-		attribute: value,
-		attribute2: value2,
-		lastattribute: value3,
-	*/
-
-	pos: [0, 0],
-	spd: [5, 0],
-
-	move: function() {
-
-		if (this.pos[0] <= 0) { 
-
-			this.spd[0] = 5;
-		};
-		if (this.pos[0] >= canvas.width - 20) { 
-
-			this.spd[0] = -5;
-		};
-
-		this.pos[0] += this.spd[0];
-		this.pos[1] += this.spd[1];
+		ctx.fillStyle = "#F00";
+		ctx.fillRect(this.pos[0], this.pos[1], 20, 20);
 	}
-}
-
-function drawBox () {
-
-	//Color
-	ctx.fillStyle = "#000";
-	//Rectangle X, Y, width, height
-	ctx.fillRect(box.pos[0], box.pos[1], 20, 20);
-}
-function drawBox2 () {
-
-	//Color
-	ctx.fillStyle = "#F00";
-	//Rectangle X, Y, width, height
-	ctx.fillRect(box2.pos[0], box2.pos[1], 20, 20);
-}
-
-function moveBoxes () {
-
-	box.move();
-	box2.move();
 }
 
 function runGame () {
 
-	//Clears screen before repaint
+	//Clear screen
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	//Always move before drawing.
-	moveBoxes();
+	//Move everything
+	box.move();
 
-	//Draw Everything to screen
-	drawBox();
-	drawBox2();
+	//Draw everything
+	box.draw();
+	guestUser.draw();
 }
 
 var draw = setInterval(runGame, (1000 / GAME_FPS));
