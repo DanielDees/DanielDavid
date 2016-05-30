@@ -5,8 +5,10 @@
 //SERVER CONNECT
 
 var socket = io.connect('http://localhost:3000');
+socket.on('socketID', assignPlayerID);
 
-socket.on('boxClass', moveGuestUser);
+socket.on('movement', moveUsers);
+socket.on('userConnection', updateUserList);
 
 //END SERVER CONNECT
 
@@ -16,58 +18,52 @@ var ctx = canvas.getContext("2d");
 
 var GAME_FPS = 60;
 
-//Other users are rendered
-function moveGuestUser(pos) {
+var playerID;
+var users = [];
 
-	console.log('IT WORKS!');
+function assignPlayerID(id) {
 
-	guestUser.pos = pos;
+	playerID = id;
+	console.log("Your ID: " + playerID);
+}
+function updateUserList(userList) {
+
+	console.log(userList);
+
+	users = userList;
+	console.log("Guest player: " + users[users.length - 1].id + " has connected!");
 }
 
-var box = new boxClass();
-var guestUser = new boxClass();
+//Other users are updated
+function moveUsers(data) {
 
-function boxClass() {
+	for (var i = 0; i < users.length; i++) {
 
-	this.pos = [0, 0];
-	this.spd = [0, 5];
+		if (users[i].id == data.id) { 
 
-	this.move = function() {
-
-		if (this.pos[1] <= 0) { 
-
-			this.spd[1] = 5;
-		};
-		if (this.pos[1] >= canvas.width - 20) { 
-
-			this.spd[1] = -5;
-		};
-
-		this.pos[0] += this.spd[0];
-		this.pos[1] += this.spd[1];	
-
-		//Send new position to server.
-		socket.emit('boxClass', this.pos);
-	}
-
-	this.draw = function() {
-
-		ctx.fillStyle = "#F00";
-		ctx.fillRect(this.pos[0], this.pos[1], 20, 20);
+			users[i].x = data.x;
+			users[i].y = data.y;
+		}
 	}
 }
+function drawUsers() {
 
+	for (var i = 0; i < users.length; i++) { 
+
+		users[i].draw(); 
+	}
+}
 function runGame () {
 
 	//Clear screen
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	//Move everything
-	box.move();
+	//Display players online
+	ctx.font = "18px Arial";
+	ctx.fillText("Players Online: " + users.length, 340, 30);
 
 	//Draw everything
-	box.draw();
-	guestUser.draw();
+	drawUsers();
 }
 
 var draw = setInterval(runGame, (1000 / GAME_FPS));
