@@ -32,12 +32,12 @@ function updateUserList(userList) {
 
 	for (var i = 0; i < userList.length; i++) {
 		
-		users[i] = new boxClass(userList[i].id, userList[i].x, userList[i].y);
+		users[i] = new boxClass(userList[i].id, userList[i].x, userList[i].y, userList[i].spd);
 	}
 
-	console.log("Guest player: " + users[users.length - 1].id + " has connected!");
+	console.log("Player: " + users[users.length - 1].id + " has connected!");
 }
-function boxClass(idGiven, x, y) {
+function boxClass(idGiven, x, y, spd) {
 
 	//PlayerID
 	this.id = idGiven || "No id Found!";
@@ -47,7 +47,7 @@ function boxClass(idGiven, x, y) {
 	this.y = y || 0;
 
 	//Speed
-	this.spd = [0, 5];
+	this.spd = spd || [0, 5];
  	
  	//Movement
 	this.move = function() {
@@ -69,6 +69,7 @@ function boxClass(idGiven, x, y) {
 			id: this.id,
 			x: this.x,
 			y: this.y,
+			spd: this.spd,
 		};
 
 		//Send new position to server.
@@ -76,9 +77,9 @@ function boxClass(idGiven, x, y) {
 	};
 
 	//Rendering
-	this.draw = function() {
+	this.draw = function(color) {
 
-		ctx.fillStyle = "#F00";
+		ctx.fillStyle = color || "#000";
 		ctx.fillRect(this.x, this.y, 20, 20);
 	};
 }
@@ -90,6 +91,13 @@ function movePlayer() {
 		if (users[i].id == playerID) { users[i].move(); }
 	}
 }
+function drawPlayer() {
+
+	//Draw player
+	for (var i = 0; i < users.length; i++) {
+		if (users[i].id == playerID) { users[i].draw("0FF"); }
+	}
+}
 //Other users are updated
 function moveUsers(data) {
 
@@ -99,12 +107,15 @@ function moveUsers(data) {
 
 			users[i].x = data.x;
 			users[i].y = data.y; 
+			users[i].spd = data.spd;
 		}
 	}
 }
 function drawUsers() {
 
-	for (var i = 0; i < users.length; i++) { users[i].draw(); }
+	for (var i = 0; i < users.length; i++) { 
+		if (users[i].id != playerID) { users[i].draw("#F08"); }
+	}
 }
 function runGame () {
 
@@ -113,6 +124,7 @@ function runGame () {
 
 	//Display players online
 	ctx.font = "18px Arial";
+	ctx.fillStyle = "#0C0";
 	ctx.fillText("Players Online: " + users.length, 340, 30);
 
 	//Move Users
@@ -120,6 +132,7 @@ function runGame () {
 
 	//Draw everything
 	drawUsers();
+	drawPlayer();
 }
 
 var draw = setInterval(runGame, (1000 / GAME_FPS));
