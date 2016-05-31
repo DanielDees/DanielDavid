@@ -42,6 +42,8 @@ function newConnection(socket) {
 				users.splice(i, 1);
 
 				console.log("A user has dis-connected - ID: " + socket.id);
+				
+				break;
 			}
 		}
 
