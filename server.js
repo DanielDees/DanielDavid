@@ -22,7 +22,6 @@ function getUserByID(id){
 		
 		if(users[i].id == id){
 			return users[i];
-			break;
 		}
 	}
 	return null;
