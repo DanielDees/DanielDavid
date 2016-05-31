@@ -15,6 +15,19 @@ io.sockets.on('connection', newConnection);
 
 var users = [];
 
+//Get a user by ID
+function getUserByID(id){
+	
+	for(var i=0; i<users.length; i++){
+		
+		if(users[i].id == id){
+			return users[i];
+			break;
+		}
+	}
+	return null;
+}
+
 //On user connection
 function newConnection(socket) {
 
