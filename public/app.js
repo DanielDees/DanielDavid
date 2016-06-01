@@ -47,29 +47,36 @@ function boxClass(idGiven, x, y, spd) {
 	this.y = y || 0;
 
 	//Speed
-	this.spd = spd || [0, 5];
+	this.spd = spd || 5;
  	
  	//Movement
 	this.move = function() {
 
-		if (this.y <= 0) { 
+		var MAX_Y = canvas.height - 20;
+		var MAX_X = canvas.width - 25;
 
-			this.spd[1] = 5;
+		if (this.y < MAX_Y && keys.S) { 
+
+			this.y += this.spd;
 		};
-		if (this.y >= canvas.width - 20) { 
+		if (this.y > 0 && keys.W) {
 
-			this.spd[1] = -5;
+			this.y -= this.spd;
 		};
+		if (this.x < MAX_X && keys.D) { 
 
-		this.x += this.spd[0];
-		this.y += this.spd[1];
+			this.x += this.spd;
+		};
+		if (this.x > 0 && keys.A) { 
+
+			this.x -= this.spd;
+		};
 
 		var data = {
 
 			id: this.id,
 			x: this.x,
 			y: this.y,
-			spd: this.spd,
 		};
 
 		//Send new position to server.
@@ -106,8 +113,7 @@ function moveUsers(data) {
 		if (users[i].id == data.id) { 
 
 			users[i].x = data.x;
-			users[i].y = data.y; 
-			users[i].spd = data.spd;
+			users[i].y = data.y;
 		}
 	}
 }
@@ -126,6 +132,7 @@ function runGame () {
 	ctx.font = "18px Arial";
 	ctx.fillStyle = "#0C0";
 	ctx.fillText("Players Online: " + users.length, 340, 30);
+	ctx.fillText("Last Keypress: " + keyButton, 340, 50);
 
 	//Move Users
 	movePlayer();

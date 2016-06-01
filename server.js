@@ -79,7 +79,6 @@ function newConnection(socket) {
 
 				users[i].x = data.x;
 				users[i].y = data.y;
-				users[i].spd = data.spd;
 
 				//Data contains id and position of user
 				socket.broadcast.emit('movement', data);
@@ -99,5 +98,5 @@ function boxClass(idGiven) {
 	this.y = 0;
 
 	//Speed
-	this.spd = [0, 5];
+	this.spd = 5;
 }
