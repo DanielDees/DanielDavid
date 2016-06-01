@@ -4,7 +4,7 @@
 
 //SERVER CONNECT
 
-var socket = io.connect('http://localhost:3000');
+var socket = io.connect('http://192.168.254.20:3000');
 socket.on('socketID', assignPlayerID);
 
 socket.on('movement', moveUsers);
