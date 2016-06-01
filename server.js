@@ -34,6 +34,8 @@ function newConnection(socket) {
 	console.log("A new user has connected - ID: " + socket.id);
 	users.push(new boxClass(socket.id));
 
+	console.log("Users online: " + users.length);
+
 	//Send user ID to person connecting
 	socket.emit('socketID', socket.id);
 
@@ -55,6 +57,7 @@ function newConnection(socket) {
 				users.splice(i, 1);
 
 				console.log("A user has dis-connected - ID: " + socket.id);
+				console.log("Users online: " + users.length);
 				
 				break;
 			}
