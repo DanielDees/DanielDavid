@@ -27,9 +27,13 @@ function assignPlayerID(id) {
 	console.log("Your ID: " + playerID);
 }
 function updateUserList(userList) {
+	
+	//Clear old users out
+	users = [];
 
+	//Add new users in.
 	console.log(userList);
-
+	
 	for (var i = 0; i < userList.length; i++) {
 		
 		users[i] = new boxClass(userList[i].id, userList[i].x, userList[i].y, userList[i].spd);
@@ -48,6 +52,19 @@ function boxClass(idGiven, x, y, spd) {
 
 	//Speed
 	this.spd = spd || 5;
+
+	this.getData = function() {
+
+		var data = {
+
+			id: this.id,
+
+			x: this.x,
+			y: this.y,
+		}
+
+		return data;
+	}
  	
  	//Movement
 	this.move = function() {
@@ -72,15 +89,8 @@ function boxClass(idGiven, x, y, spd) {
 			this.x -= this.spd;
 		};
 
-		var data = {
-
-			id: this.id,
-			x: this.x,
-			y: this.y,
-		};
-
 		//Send new position to server.
-		socket.emit('moveBox', data);
+		socket.emit('moveBox', this.getData());
 	};
 
 	//Rendering
@@ -131,8 +141,8 @@ function runGame () {
 	//Display players online
 	ctx.font = "18px Arial";
 	ctx.fillStyle = "#0C0";
-	ctx.fillText("Players Online: " + users.length, 340, 30);
-	ctx.fillText("Last Keypress: " + keyButton, 340, 50);
+	ctx.fillText("Players Online: " + users.length, canvas.width - 160, 30);
+	ctx.fillText("Last Keypress: " + keyButton, canvas.width - 160, 50);
 
 	//Move Users
 	movePlayer();
