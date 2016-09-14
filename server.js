@@ -91,14 +91,19 @@ function newConnection(socket) {
 	}
 }
 
-function boxClass(idGiven, x, y, spd) {
+function boxClass(idGiven, x, y, spd, color) {
 
 	//PlayerID
 	this.id = idGiven || "No id Found!";
 
+	this.color = color || "#000";
+
 	//Position
 	this.x = x || 0;
 	this.y = y || 0;
+
+	this.width = 20;
+	this.height = 20;
 
 	//Speed
 	this.spd = spd || 5;
@@ -112,35 +117,41 @@ function boxClass(idGiven, x, y, spd) {
 		if (this.y < MAX_Y && keys.S) { 
 
 			this.y += this.spd;
-		};
+		}
 		if (this.y > 0 && keys.W) {
 
 			this.y -= this.spd;
-		};
+		}
 		if (this.x < MAX_X && keys.D) { 
 
 			this.x += this.spd;
-		};
+		}
 		if (this.x > 0 && keys.A) { 
 
 			this.x -= this.spd;
-		};
+		}
 
 		var data = {
 
 			id: this.id,
 			x: this.x,
 			y: this.y,
-		};
+		}
 
 		//Send new position to server.
 		socket.emit('moveBox', data);
-	};
+	}
+
+	//Hitbox
+  	this.top = function() { return this.Y; }
+  	this.bottom = function() { return this.Y + this.height; }
+  	this.left = function() { return this.X; }
+  	this.right = function() { return this.X + this.width; }
 
 	//Rendering
-	this.draw = function(color) {
+	this.draw = function() {
 
-		ctx.fillStyle = color || "#000";
-		ctx.fillRect(this.x, this.y, 20, 20);
-	};
+		ctx.fillStyle = this.color;
+		ctx.fillRect(this.x, this.y, this.width, this.height);
+	}
 }

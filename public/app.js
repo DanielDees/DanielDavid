@@ -33,7 +33,7 @@ function updateUserList(userList) {
 
 	//Add new users in.
 	console.log(userList);
-	
+
 	for (var i = 0; i < userList.length; i++) {
 		
 		users[i] = new boxClass(userList[i].id, userList[i].x, userList[i].y, userList[i].spd);
@@ -41,14 +41,19 @@ function updateUserList(userList) {
 
 	console.log("Player: " + users[users.length - 1].id + " has connected!");
 }
-function boxClass(idGiven, x, y, spd) {
+function boxClass(idGiven, x, y, spd, color) {
 
 	//PlayerID
 	this.id = idGiven || "No id Found!";
 
+	this.color == color || "#000";
+
 	//Position
 	this.x = x || 0;
 	this.y = y || 0;
+
+	this.width = 20;
+	this.height = 20;
 
 	//Speed
 	this.spd = spd || 5;
@@ -93,11 +98,17 @@ function boxClass(idGiven, x, y, spd) {
 		socket.emit('moveBox', this.getData());
 	};
 
-	//Rendering
-	this.draw = function(color) {
+	//Hitbox
+  	this.top = function() { return this.Y; }
+  	this.bottom = function() { return this.Y + this.height; }
+  	this.left = function() { return this.X; }
+  	this.right = function() { return this.X + this.width; }
 
-		ctx.fillStyle = color || "#000";
-		ctx.fillRect(this.x, this.y, 20, 20);
+	//Rendering
+	this.draw = function() {
+
+		ctx.fillStyle = this.color;
+		ctx.fillRect(this.x, this.y, this.width, this.height);
 	};
 }
 
@@ -112,7 +123,12 @@ function drawPlayer() {
 
 	//Draw player
 	for (var i = 0; i < users.length; i++) {
-		if (users[i].id == playerID) { users[i].draw("0FF"); }
+		if (users[i].id == playerID) { 
+
+			users[i].color = "#0C0";
+			users[i].draw(); 
+			//console.log(playerID + " == " + users[i].id); 
+		}
 	}
 }
 //Other users are updated
@@ -130,7 +146,12 @@ function moveUsers(data) {
 function drawUsers() {
 
 	for (var i = 0; i < users.length; i++) { 
-		if (users[i].id != playerID) { users[i].draw("#F08"); }
+		if (users[i].id != playerID) { 
+
+			users[i].color = "#FF0";
+			users[i].draw(); 
+			//console.log(playerID + " != " + users[i].id); 
+		}
 	}
 }
 function runGame () {
@@ -148,6 +169,7 @@ function runGame () {
 	movePlayer();
 
 	//Draw everything
+	
 	drawUsers();
 	drawPlayer();
 }
